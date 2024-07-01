@@ -1,4 +1,4 @@
-import UserController from "api/user/user.controller";
+import UserController from "../api/user/user.controller";
 import { Application } from "express";
 import { useExpressServer } from "routing-controllers";
 
