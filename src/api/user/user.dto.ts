@@ -19,7 +19,7 @@ export class SignUpDto{
 }
 
 
-export class getUsersDTO{
+export class GetUsersDTO{
   name: string;
   userName: string;
   id: string// or int if using rdbms

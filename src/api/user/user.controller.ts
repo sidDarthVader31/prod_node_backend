@@ -1,26 +1,33 @@
 import { Body, Get, JsonController, Post } from "routing-controllers";
-import { getUsersDTO, SignUpDto } from "./user.dto";
+import { GetUsersDTO, SignUpDto } from "./user.dto";
 import Response from '../../common/dto/response'
-import { Service } from "typedi";
+import Container, { Inject, Service } from "typedi";
+import UserService from "./user.service";
 
 
 @JsonController('/users')
 @Service()
 class UserController {
-
-
+  @Inject()
+  private userService : UserService
   @Get('/')
-  async getUsers(): Promise<Response<getUsersDTO>>{
-    return new Response(200, 'fetched',  
-     new  getUsersDTO('sid','si123', 'asdfsdf'))
+  async getUsers(): Promise<Response<GetUsersDTO[]>>{
+    const data = await this.userService.getAllUsers();
+    return new Response(200, 'fetched',  data)
   }
 
   @Post('/signup')
-  async addUser(@Body({required: true}) body: getUsersDTO ): Promise< Response< getUsersDTO>>{
-    const user = new getUsersDTO(body.name, body.userName, 'sadfsdf');
-    // const user = new getUsersDTO('name','username','abcd')
-    return new Response(200, 'fetched successfully', user);
+  async addUser(@Body({required: true}) body: SignUpDto ): Promise< Response< GetUsersDTO | string>>{
+    try{
+    const data = await this.userService.addUser(body);
+    return new Response(200, 'fetched successfully', data);
+    }
+    catch(e){
+      console.log(`error received:`, e)
+      return new Response(500, 'something went wrong', e as unknown as string)
+    }
+
   }
 }
 
-export default UserController
+export default UserController;
