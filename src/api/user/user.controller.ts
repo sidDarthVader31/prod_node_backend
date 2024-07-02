@@ -1,15 +1,16 @@
 import { Body, Get, JsonController, Post } from "routing-controllers";
 import { GetUsersDTO, SignUpDto } from "./user.dto";
 import Response from '../../common/dto/response'
-import Container, { Inject, Service } from "typedi";
-import UserService from "./user.service";
+import { Inject, Service } from "typedi";
+import {UserService}  from "./user.service";
 
 
 @JsonController('/users')
 @Service()
 class UserController {
-  @Inject()
-  private userService : UserService
+  constructor(
+    @Inject(() => UserService) private userService: UserService
+  ) {}
   @Get('/')
   async getUsers(): Promise<Response<GetUsersDTO[]>>{
     const data = await this.userService.getAllUsers();

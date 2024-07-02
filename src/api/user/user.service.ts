@@ -1,12 +1,11 @@
 import { Service } from "typedi";
 import { GetUsersDTO, SignUpDto } from "./user.dto";
-
-interface IUserService {
+ interface IUserService {
   getAllUsers(): Promise<GetUsersDTO[]>;
   addUser(user: SignUpDto): Promise<GetUsersDTO>;
 }
 @Service()
-class UserService implements IUserService {
+export class UserService {
 
   async getAllUsers(): Promise<GetUsersDTO[]>{
     return [new GetUsersDTO('sid','sid123','abcd1')]
@@ -16,4 +15,3 @@ class UserService implements IUserService {
   }
 }
 
-export default UserService;
